@@ -14,3 +14,4 @@ A Flutter UI helper package with widgets like buttons, text inputs, toast, snack
 dependencies:
   ui_mate: ^0.0.1
 # UIMate
+# UIMate
