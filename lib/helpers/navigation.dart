@@ -1,83 +1,34 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 enum RouteType { push, pushReplace, pushRemoveUntil, pushReplaceAll }
 
 Future<dynamic> pSetRout({
-  required dynamic page,
+  required Widget page,
+  required BuildContext context,
   RouteType routeType = RouteType.push,
   bool fullscreenDialog = false,
-  BuildContext? context,
-  Duration? duration,
-  Curve? curve,
-  Transition? transition,
-  bool? opaque,
-  int? id,
-  String? routeName,
-  dynamic arguments,
-  Bindings? binding,
-  bool preventDuplicates = true,
-  bool? popGesture,
-  double Function(BuildContext context)? gestureWidth,
   RoutePredicate? predicate,
 }) async {
+  final route = MaterialPageRoute(
+    builder: (context) => page,
+    fullscreenDialog: fullscreenDialog,
+  );
+
   switch (routeType) {
     case RouteType.push:
-      return Get.to(
-        page,
-        fullscreenDialog: fullscreenDialog,
-        duration: duration,
-        curve: curve,
-        transition: transition,
-        preventDuplicates: preventDuplicates,
-        routeName: routeName,
-        arguments: arguments,
-        binding: binding,
-        gestureWidth: gestureWidth,
-        id: id,
-        opaque: opaque,
-        popGesture: popGesture,
-      );
+      return Navigator.push(context, route);
+
     case RouteType.pushReplace:
-      return Get.off(
-        page,
-        fullscreenDialog: fullscreenDialog,
-        duration: duration,
-        curve: curve,
-        transition: transition,
-        preventDuplicates: preventDuplicates,
-        routeName: routeName,
-        arguments: arguments,
-        binding: binding,
-        gestureWidth: gestureWidth,
-        id: id,
-        opaque: opaque??false,
-        popGesture: popGesture,
-      );
+      return Navigator.pushReplacement(context, route);
+
     case RouteType.pushReplaceAll:
-      return Get.offAll(
-        page,
-        fullscreenDialog: fullscreenDialog,
-        duration: duration,
-        curve: curve,
-        transition: transition,
-        routeName: routeName,
-        arguments: arguments,
-        binding: binding,
-        gestureWidth: gestureWidth,
-        id: id,
-        opaque: opaque??false,
-        popGesture: popGesture,
-        predicate: predicate,
-      );
+      return Navigator.pushAndRemoveUntil(context, route, (route) => false);
+
     case RouteType.pushRemoveUntil:
       return Navigator.pushAndRemoveUntil(
-        context ?? Get.context!,
-        MaterialPageRoute(
-          builder: (context) => page,
-          fullscreenDialog: fullscreenDialog,
-        ),
-            (route) => false,
+        context,
+        route,
+        predicate ?? (route) => false,
       );
   }
 }

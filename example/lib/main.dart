@@ -54,7 +54,7 @@ class _ExampleHomePageState extends State<ExampleHomePage> {
               TxtFormInput(
                 controller: _controller,
                 hintText: "Enter your name",
-                preFix: Icon(Icons.person, color: Colors.grey),
+                preFix: const Icon(Icons.person, color: Colors.grey),
                 onChanged: (val) {
                   debugPrint("Input changed: $val");
                 },
@@ -69,9 +69,14 @@ class _ExampleHomePageState extends State<ExampleHomePage> {
                 radius: 8,
                 onPressed: () {
                   if (_controller.text.isEmpty) {
-                    pSnackBar(message: "⚠️ Please enter your name",);
+                    pSnackBar(
+                      context: context, // ✅ context is now required
+                      message: "⚠️ Please enter your name",
+                    );
                   } else {
-                    pShowToast(message: "✅ Hello, ${_controller.text}!");
+                    pShowToast(
+                      message: "✅ Hello, ${_controller.text}!",
+                    );
                   }
                 },
               ),
@@ -84,6 +89,7 @@ class _ExampleHomePageState extends State<ExampleHomePage> {
                 textColor: Colors.white,
                 onPressed: () {
                   pSnackBar(
+                    context: context, // ✅ pass context here
                     message: "ℹ️ This is an info snackbar",
                     backgroundColor: Colors.green,
                   );
