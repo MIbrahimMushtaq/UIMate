@@ -1,0 +1,113 @@
+import 'package:flutter/material.dart';
+
+class Clr {
+  static Color colorPrimary = Colors.black;
+  static Color colorSecondary = Colors.black;
+  static const Color colorCyan = Colors.cyan;
+  static const Color colorTransparent = Color(0x00000000);
+  static const Color colorGreyLight = Color(0xFFF1F5F9);
+  static const Color colorWhite = Colors.white;
+  static const Color colorGreen = Colors.green;
+  static const Color colorBlack = Colors.black;
+  static Color? colorTxt ;
+  static Color? colorTxtInput;
+
+  Clr._();
+}
+
+
+class Siz {
+  Siz._();
+
+  static const double extraLargeTitle100 = 100.0;
+  static const double largeTitle34 = 34.0;
+  static const double title28 = 28.0;
+  static const double title22 = 22.0;
+  static const double title20 = 20.0;
+  static const double headline17 = 17.0;
+  static const double body17 = 17;
+  static const double callOut16 = 16;
+  static const double subhead15 = 15;
+  static const double footnote13 = 13;
+  static const double caption12 = 12;
+  static const double caption11 = 11;
+  static const double caption8 = 8;
+
+  static const double h0 = 100.0;
+  static const double h1 = 40.0;
+  static const double h2 = 25.0;
+  static const double h3 = 20.0;
+  static const double h4 = 17.0;
+  static const double h5 = 14.0;
+  static const double h6 = 12.0;
+  static const double h7 = 10.0;
+  static const double h8 = 8.0;
+  static double defaultRadius = 8.0;
+  static double defaultBtnHeight = 50;
+  static const double standardPadding = 16.0;
+  static const double standardMargin = 16.0;
+  static const double profileImageSize = 150;
+}
+
+
+class Static {
+  static bool? txtInputHasBorder;
+  static bool txtInputHasLabel = false;
+  static bool txtInputHasLabelOnTop = false;
+  static bool txtInputHasLabelWithStar = true;
+  static bool defaultImageClick = true;
+  static EdgeInsetsGeometry? txtInoutDefaultContentPadding;
+  static FontWeight? fontWeight;
+  static double? defaultFontSize;
+  static String? currencySymbol;
+  static String? fontFamily;
+  static String? txtFontFamily;
+  static String? btnFontFamily;
+  static String? txtInputFontFamily;
+  static String? currencyLocale;
+  static bool isCurrencyCompact = false;
+  static int? currencyDecimal;
+  static InputDecoration? inputDecoration;
+  static InputBorder? enabledBorder;
+  static InputBorder? focusedBorder;
+  static InputBorder? errorBorder;
+  static InputBorder? border;
+  static Color? borderColor;
+  static double? labelPadding;
+  static double? btnHeight;
+  static double? btnRadius;
+  static Color? btnBgColor;
+  static Color? btnShadowColor;
+  static Color? btnTextColor;
+  static Color? btnBorderColor;
+  static bool? appDirectionLeftToRight;
+  static bool? defaultLoadingProIsIOS;
+  static bool? useDefaultURl;
+  static int stopDecodingFromErrorCode = 400;
+  static Matrix4? onHoverDefaultMatrix4;
+  static double? onHoverDefaultScale;
+  static Duration? onHoverDefaultAnimatedDuration;
+  static Color? webDialogBgColor;
+  static Duration? dialogAnimationDuration;
+  static String? defaultDateFormat;
+  static String? defaultDateTimeFormat;
+  static EdgeInsets? webDialogPadding;
+  static EdgeInsets? webDialogMargin;
+  static Widget? customLoadingWidget;
+  static bool isHintCapitalizeFirst = false;
+  static bool? usePreCheckFunctionInHttpCalls;
+  static String? responseDataKey;
+  static String? responseMessageKey;
+  static String? responseErrorMessageKey;
+  static String? responseStatusCodeKey;
+  static String? responseErrorCodeKey;
+  static String? responsePaginationKey;
+  static String? responseStatusKey;
+  static String? httpCallTokenKey;
+  static bool canHttpCallAddBearerAsPreToken = true;
+  static Color? toastBackgroundColor;
+  static Color? toastTextColor;
+
+
+  Static._();
+}
