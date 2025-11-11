@@ -1,6 +1,6 @@
 name: ui_mate
 description: "A Flutter UI helper package with widgets like buttons, text inputs, toast, snackbar, navigation, etc."
-version: 0.0.3
+version: 0.0.4
 homepage: https://github.com/MIbrahimMushtaq/UIMate
 repository: https://github.com/MIbrahimMushtaq/UIMate
 issue_tracker: https://github.com/MIbrahimMushtaq/UIMate/issues
