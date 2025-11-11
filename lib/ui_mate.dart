@@ -1,3 +1,4 @@
+library;
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:ui_mate/utils/date.dart';
@@ -10,6 +11,7 @@ export 'helpers/card.dart';
 export 'helpers/navigation.dart';
 export 'helpers/formatter.dart';
 
+class UiMate {}
 Future<void> uiSetSetting({
   required Color primaryColor,
   required Color secondaryColor,

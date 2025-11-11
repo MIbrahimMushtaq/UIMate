@@ -9,6 +9,11 @@ import 'package:ui_mate/widgets/txt_input.dart';
 import 'package:ui_mate/dialogs/overlay_loading.dart';
 
 void main() {
+  uiSetSetting(
+    primaryColor: Colors.blue,
+    secondaryColor: Colors.black,
+
+  );
   runApp(const ExampleApp());
 }
 
