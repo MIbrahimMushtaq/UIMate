@@ -45,6 +45,7 @@ Future<void> uiSetSetting({
   double? btnRadius,
   Color? btnBorderColor,
   Widget? btnLoadingWidget,
+
 }) async {
   await Dates.initializeDateFormat();
 

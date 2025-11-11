@@ -77,6 +77,20 @@ class Static {
 
   static TxtInputBorderType? txtInputBorderType;
 
+  static bool? txtInputHasLabelOnTop;
+
+  static bool? txtInputHasLabel;
+
+  static TextStyle? labelInputStyle;
+
+  static double? labelPadding;
+
+  static TextStyle? styleInput;
+
+  static Color? borderColor;
+
+  static EdgeInsetsGeometry? txtInoutDefaultContentPadding;
+
 
   Static._();
 }
