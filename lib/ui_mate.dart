@@ -41,10 +41,14 @@ Future<void> uiSetSetting({
   Color? btnBackgroundColor,
   Color? btnLoadingColor,
   double? btnHeight,
+
   Color?  btnTextColor,
   double? btnRadius,
   Color? btnBorderColor,
   Widget? btnLoadingWidget,
+  double? btnTextSize,
+  String? btnFontFamily,
+  bool? defaultLoadingProIsIOS
 
 }) async {
   await Dates.initializeDateFormat();
@@ -64,11 +68,7 @@ Future<void> uiSetSetting({
   Static.fontFamily = fontFamily;
   Static.txtFontFamily = txtFontFamily;
   Static.txtInputFontFamily = txtInputFontFamily;
-  Static.defaultFontSize = defaultFontSize;
-
   Static.appDirectionLeftToRight = appDirectionLeftToRight;
-  Static.dialogAnimationDuration = dialogAnimationDuration;
-
   Static.customLoadingProWidget = customLoadingWidget;
   Static.toastLength = defaultToastLength;
   Static.toastBackgroundColor = toastBackgroundColor;
@@ -77,12 +77,12 @@ Future<void> uiSetSetting({
 
   Static.defaultDateFormat = defaultDateFormat;
   Static.defaultDateTimeFormat = defaultDateTimeFormat;
-  Static.btnBackgroundColor = btnBackgroundColor;
   Static.btnLoadingColor = btnLoadingColor;
   Static.btnHeight = btnHeight;
   Static.btnTextColor = btnTextColor;
   Static.btnRadius = btnRadius;
   Static.btnBorderColor = btnBorderColor;
   Static.btnLoadingWidget = btnLoadingWidget;
+  Static.defaultLoadingProIsIOS = defaultLoadingProIsIOS;
 
 }

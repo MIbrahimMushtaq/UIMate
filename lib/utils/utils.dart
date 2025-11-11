@@ -41,35 +41,18 @@ class Static {
   static String? txtInputFontFamily;
   static InputDecoration? txtInputDecoration;
   static bool? appDirectionLeftToRight;
-  static Duration? dialogAnimationDuration;
   static bool? defaultLoadingProIsIOS;
   static String? defaultDateFormat;
   static String? defaultDateTimeFormat;
   static Widget? customLoadingProWidget;
   static Color? toastBackgroundColor;
   static Color? toastTextColor;
-  static double? defaultFontSize = 14.0;
-  static Color? btnBackgroundColor;
   static Color? btnLoadingColor;
   static double? btnHeight;
   static Color?  btnTextColor;
   static double? btnRadius;
   static Color? btnBorderColor;
   static Widget? btnLoadingWidget;
-
-  static Color? txtInputBorderColor;
-
-  static TextStyle? txtInputHintStyle;
-
-  static double? txtInputHintFontSize;
-
-  static Color? txtInputHIntColor;
-
-  static Color? txtInputFilledColor;
-
-  static TextStyle? txtInputStyle;
-
-  static double? txtInputFontSize;
 
   static Color? txtInputColor;
 
@@ -90,6 +73,10 @@ class Static {
   static Color? borderColor;
 
   static EdgeInsetsGeometry? txtInoutDefaultContentPadding;
+
+  static double? btnTextSize;
+
+  static String? btnFontFamily;
 
 
   Static._();

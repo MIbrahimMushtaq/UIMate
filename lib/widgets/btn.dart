@@ -168,6 +168,8 @@
 
 import 'package:flutter/material.dart';
 
+import '../utils/utils.dart';
+
 class Btn extends StatelessWidget {
   final String? text;
   final VoidCallback? onPressed;
@@ -250,7 +252,7 @@ class Btn extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: height ?? 48,
+      height: height ?? Static.btnHeight ?? 48,
       width: width,
       child: buildButton(),
     );
@@ -361,12 +363,12 @@ class Btn extends StatelessWidget {
 
   TextStyle textStyleLocal() {
     return TextStyle(
-      color: isTextOnly ? (textColor ?? Colors.black) : textColor,
-      fontSize: textSize ?? 16,
+      color: isTextOnly ? (textColor ?? Static.btnTextColor ?? Colors.black) : textColor??Static.btnTextColor,
+      fontSize: textSize ?? Static.btnTextSize ?? 16,
       fontWeight: hasBold
           ? fontWeight ?? FontWeight.bold
           : fontWeight ?? FontWeight.normal,
-      fontFamily: fontFamily,
+      fontFamily: fontFamily ?? Static.btnFontFamily,
       decoration: textDecoration, // ✅ supports underline/lineThrough
       decorationColor:
       decorationColor ?? textColor ?? Colors.black, // ✅ underline color
