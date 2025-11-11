@@ -39,6 +39,7 @@ class _ExampleHomePageState extends State<ExampleHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(title: const Text("UI Mate Example")),
       body: Padding(
         padding: const EdgeInsets.all(16),
@@ -65,7 +66,13 @@ class _ExampleHomePageState extends State<ExampleHomePage> {
               ),
               MyDivider(),
               MyDivider(),
-
+              Btn(text: 'Text Submit',
+                onPressed: (){},
+                textDecorationColor: Colors.amber,
+                hasBorder: false,
+                isTextOnly: true,
+                textDecoration: TextDecoration.underline,
+                textColor: Colors.red,),
               // Button Example
               Btn(
                 text: "",

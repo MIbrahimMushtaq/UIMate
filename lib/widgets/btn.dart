@@ -21,9 +21,8 @@ class Btn extends StatefulWidget {
   final bool isLoose;
   final bool hasBold;
   final bool isTextOnly;
-
   final TextDecoration? textDecoration;
-
+  final Color? textDecorationColor;
   // Dimensions
   final double? radius;
   final double? textSize;
@@ -59,6 +58,7 @@ class Btn extends StatefulWidget {
     this.hasBold = false,
     this.isTextOnly = false,
     this.textDecoration,
+    this.textDecorationColor,
     this.radius,
     this.textSize,
     this.verticalPadding = 4,
@@ -137,6 +137,7 @@ class _BtnState extends State<Btn> {
                               : widget.fontWeight ?? FontWeight.normal,
                           fontFamily: widget.fontFamily,
                           decoration: widget.textDecoration?? TextDecoration.none,
+                          decorationColor: widget.textDecorationColor?? textColor,
                         ),
                   ),
                   if (widget.postFix != null) ...[
