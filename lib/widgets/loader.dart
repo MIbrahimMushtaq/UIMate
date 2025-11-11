@@ -31,8 +31,8 @@ class LoadingPro extends StatelessWidget {
     }
 
     // Fallback to global custom widget if set in Static
-    if (Static.customLoadingWidget != null) {
-      return Static.customLoadingWidget!;
+    if (Static.customLoadingProWidget != null) {
+      return Static.customLoadingProWidget!;
     }
 
     final loaderColor = valueColor ?? Clr.colorPrimary;

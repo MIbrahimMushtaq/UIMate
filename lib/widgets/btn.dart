@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../utils/utils.dart';
+
 class Btn extends StatefulWidget {
   final String text;
   final VoidCallback? onPressed;
@@ -19,6 +21,8 @@ class Btn extends StatefulWidget {
   final bool isLoose;
   final bool hasBold;
   final bool isTextOnly;
+
+  final TextDecoration? textDecoration;
 
   // Dimensions
   final double? radius;
@@ -54,6 +58,7 @@ class Btn extends StatefulWidget {
     this.isLoose = false,
     this.hasBold = false,
     this.isTextOnly = false,
+    this.textDecoration,
     this.radius,
     this.textSize,
     this.verticalPadding = 4,
@@ -88,27 +93,26 @@ class _BtnState extends State<Btn> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: widget.height ?? 48,
+      height: widget.height ?? Static.btnHeight ?? 48,
       width: widget.width,
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
-          backgroundColor: widget.isTextOnly ? Colors.transparent : bgColor,
-          foregroundColor: textColor,
+          backgroundColor: widget.isTextOnly ? Colors.transparent : bgColor ?? Static.btnBackgroundColor,
+          foregroundColor: textColor ?? Static.btnTextColor ?? Colors.black,
           elevation: widget.isTextOnly ? 0 : widget.elevation,
           shadowColor: widget.shadowColor ?? Colors.black12,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(widget.radius ?? 8.0),
+            borderRadius: BorderRadius.circular(widget.radius ?? Static.btnRadius ?? 8.0),
           ),
           side: widget.hasBorder
               ? BorderSide(
             color: widget.isTextOnly
-                ? Colors.transparent
-                : borderColor ?? Colors.blue,
+                ? (borderColor ?? Static.btnBorderColor?? Colors.blue): borderColor?? Static.btnBorderColor ??Colors.black,
             width: widget.borderWidth ?? 1,
           )
               : BorderSide.none,
         ),
-        onPressed: widget.isLoading ? null : widget.onPressed,
+        onPressed: widget.isLoading ? (){} : widget.onPressed,
         child: Stack(
           alignment: Alignment.center,
           children: [
@@ -132,6 +136,7 @@ class _BtnState extends State<Btn> {
                               ? FontWeight.bold
                               : widget.fontWeight ?? FontWeight.normal,
                           fontFamily: widget.fontFamily,
+                          decoration: widget.textDecoration?? TextDecoration.none,
                         ),
                   ),
                   if (widget.postFix != null) ...[
@@ -142,14 +147,14 @@ class _BtnState extends State<Btn> {
               ),
             ),
             if (widget.isLoading)
-              widget.loadingWidget ??
+              widget.loadingWidget ?? Static.btnLoadingWidget ??
                   SizedBox(
                     width: 20,
                     height: 20,
                     child: CircularProgressIndicator(
                       strokeWidth: 2,
                       valueColor: AlwaysStoppedAnimation<Color>(
-                        widget.loadingColor ?? Colors.white,
+                        widget.loadingColor ?? Static.btnLoadingColor ?? Colors.black,
                       ),
                     ),
                   ),

@@ -1,34 +1,53 @@
 import 'package:flutter/material.dart';
+import 'focus.dart';
 
 enum RouteType { push, pushReplace, pushRemoveUntil, pushReplaceAll }
 
 Future<dynamic> pSetRout({
-  required Widget page,
-  required BuildContext context,
+  required dynamic page,
   RouteType routeType = RouteType.push,
   bool fullscreenDialog = false,
+  BuildContext? context,
+  Duration? duration,
+  Curve? curve,
+  bool preventDuplicates = true,
+  bool? opaque,
+  String? routeName,
+  dynamic arguments,
   RoutePredicate? predicate,
 }) async {
-  final route = MaterialPageRoute(
-    builder: (context) => page,
+  pFocusOut(context: context!);
+
+  final ctx = context;
+
+  Widget pageWidget = page is Widget ? page : page();
+
+  final route = PageRouteBuilder(
+    pageBuilder: (_, _, ___) => pageWidget,
+    settings: RouteSettings(
+      name: routeName,
+      arguments: arguments,
+    ),
     fullscreenDialog: fullscreenDialog,
+    opaque: opaque ?? true,
+    transitionDuration: duration ?? const Duration(milliseconds: 300),
+    transitionsBuilder: (_, animation, secondaryAnimation, child) {
+      final curved =
+      curve != null ? CurvedAnimation(parent: animation, curve: curve) : animation;
+      return FadeTransition(opacity: curved, child: child);
+    },
   );
 
   switch (routeType) {
     case RouteType.push:
-      return Navigator.push(context, route);
-
+      return Navigator.push(ctx, route);
     case RouteType.pushReplace:
-      return Navigator.pushReplacement(context, route);
-
+      return Navigator.pushReplacement(ctx, route);
     case RouteType.pushReplaceAll:
-      return Navigator.pushAndRemoveUntil(context, route, (route) => false);
-
+      return Navigator.pushAndRemoveUntil(ctx, route, predicate ?? (route) => false);
     case RouteType.pushRemoveUntil:
-      return Navigator.pushAndRemoveUntil(
-        context,
-        route,
-        predicate ?? (route) => false,
-      );
+      return Navigator.pushAndRemoveUntil(ctx, route, (route) => false);
   }
 }
+
+

@@ -10,7 +10,7 @@ class MyVerticalDivider extends StatelessWidget {
 
   const MyVerticalDivider({
     this.width = 16.0, // sensible default
-    this.color = Colors.grey,
+    this.color = Colors.transparent,
     this.thickness,
     this.indent,
     this.endIndent,
@@ -39,7 +39,7 @@ class MyDivider extends StatelessWidget {
 
   const MyDivider({
     this.height = 16.0, // sensible default
-    this.color = Colors.grey,
+    this.color = Colors.transparent,
     this.thickness,
     this.indent,
     this.endIndent,

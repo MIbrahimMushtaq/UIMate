@@ -1,7 +1,7 @@
 import 'package:intl/intl.dart';
 import 'toast.dart';
 
-pCurrencyFormat(
+Object pCurrencyFormat(
     dynamic value, {
       String? locale,
       String? symbol,

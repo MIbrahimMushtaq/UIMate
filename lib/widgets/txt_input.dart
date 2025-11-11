@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../utils/utils.dart';
 
+enum TxtInputBorderType { outline, underline, none}
+
 class TxtFormInput extends StatelessWidget {
   final TextEditingController? controller;
   final String? errorMessage, hintText, labelText, prefixText;
@@ -20,11 +22,10 @@ class TxtFormInput extends StatelessWidget {
   final bool isPassword;
   final bool enabled;
   final bool isOptional;
-  final bool removeAllBorders;
   final bool autofocus;
   final bool hasCounter;
   final bool? showCursor;
-  final bool? hasBorder, hasLabel, showLabelStar, hasLabelOnTop;
+  final TxtInputBorderType? borderType;
   final TextInputType? keyboardType;
   final TextInputAction? textInputAction;
   final VoidCallback? onEditingComplete;
@@ -66,10 +67,6 @@ class TxtFormInput extends StatelessWidget {
     this.hintText = '',
     this.hintTextColor,
     this.enabled = true,
-    this.hasLabel,
-    this.hasBorder,
-    this.hasLabelOnTop,
-    this.showLabelStar,
     this.postFix,
     this.preFix,
     this.postFixStyle,
@@ -86,7 +83,6 @@ class TxtFormInput extends StatelessWidget {
     this.borderColor,
     this.borderWidth = 1.2,
     this.autofocus = false,
-    this.removeAllBorders = false,
     this.prefixText,
     this.prefixTextSize,
     this.postFixTextSize,
@@ -105,23 +101,24 @@ class TxtFormInput extends StatelessWidget {
     this.cursorColor,
     this.fontFamily,
     this.height,
+    this.borderType
   });
 
   @override
   Widget build(BuildContext context) {
     final InputDecoration effectiveDecoration = (decoration ??
-        Static.inputDecoration ??
+        Static.txtInputDecoration ??
         InputDecoration(
           border: _buildBorder(),
           enabledBorder: _buildBorder(),
-          focusedBorder: _buildBorder(color: borderColor ?? Colors.blue),
+          focusedBorder: _buildBorder(color: borderColor ?? Static.txtInputBorderColor ?? Colors.blue),
           errorBorder: _buildBorder(color: Colors.red),
           focusedErrorBorder: _buildBorder(color: Colors.red),
           hintText: hintText,
-          hintStyle: hintStyle ??
+          hintStyle: hintStyle ?? Static.txtInputHintStyle ??
               TextStyle(
-                fontSize: hintTextSize ?? textSize,
-                color: hintTextColor ?? Colors.grey,
+                fontSize: hintTextSize ?? Static.txtInputHintFontSize ?? textSize,
+                color: hintTextColor ?? Static.txtInputHIntColor ?? Colors.grey,
                 fontFamily: fontFamily ?? Static.txtInputFontFamily,
               ),
           prefixIcon: preFix,
@@ -137,14 +134,14 @@ class TxtFormInput extends StatelessWidget {
                 fontSize: postFixTextSize ?? textSize,
                 color: postFixTextColor ?? textColor,
               ),
-          filled: fillColor != null,
-          fillColor: fillColor,
+          filled: fillColor != null || Static.txtInputFilledColor != null,
+          fillColor: fillColor ?? Static.txtInputFilledColor,
           counterText: hasCounter ? null : "",
           contentPadding: contentPadding ??
               EdgeInsets.symmetric(
                 horizontal: 12,
                 vertical: (height != null ? (height! - (textSize ?? 16)) / 2 : 12),
-              ), // ✅ keeps text centered
+              ),
         ));
 
     return TextFormField(
@@ -157,14 +154,14 @@ class TxtFormInput extends StatelessWidget {
       inputFormatters: inputFormatters,
       textAlign: textAlign,
       textCapitalization: textCapitalization,
-      style: style ??
+      style: style ?? Static.txtInputStyle ??
           TextStyle(
-            fontSize: textSize ?? 16,
-            color: textColor ?? Clr.colorTxt,
+            fontSize: textSize ?? Static.txtInputFontSize ?? 16,
+            color: textColor ?? Static.txtInputColor ?? Clr.colorTxt,
             fontFamily: fontFamily ?? Static.txtInputFontFamily,
           ),
       obscureText: isPassword,
-      cursorColor: cursorColor,
+      cursorColor: cursorColor ?? Static.txtInputCursorColor,
       keyboardType: keyboardType,
       onChanged: onChanged,
       textInputAction: textInputAction,
@@ -196,17 +193,29 @@ class TxtFormInput extends StatelessWidget {
     );
   }
 
-  OutlineInputBorder _buildBorder({Color? color}) {
-    return OutlineInputBorder(
-      borderRadius:
-      borderRadius ?? BorderRadius.circular(radius ?? Siz.defaultRadius),
-      borderSide: removeAllBorders
-          ? BorderSide.none
-          : borderSide ??
-          BorderSide(
+  InputBorder _buildBorder({Color? color}) {
+    switch (borderType??(Static.txtInputBorderType)??TxtInputBorderType.outline) {
+      case TxtInputBorderType.none:
+        return InputBorder.none;
+
+      case TxtInputBorderType.underline:
+        return UnderlineInputBorder(
+          borderSide: BorderSide(
             width: borderWidth,
             color: color ?? borderColor ?? Clr.colorGreyLight,
           ),
-    );
+        );
+
+      case TxtInputBorderType.outline:
+      return OutlineInputBorder(
+          borderRadius:
+          borderRadius ?? BorderRadius.circular(radius ?? Siz.defaultRadius),
+          borderSide: borderSide ??
+              BorderSide(
+                width: borderWidth,
+                color: color ?? borderColor ?? Clr.colorGreyLight,
+              ),
+        );
+    }
   }
 }

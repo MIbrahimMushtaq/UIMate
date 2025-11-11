@@ -1,17 +1,21 @@
 import 'package:flutter/material.dart';
 
+import '../utils/utils.dart';
+
 class Txt extends StatelessWidget {
   final String? text;
   final String? fontFamily;
   final FontWeight? fontWeight;
   final bool hasBold, hasItalic, hasUnderLine, hasLineThrough, checkOverFlow, removeHTML;
   final Color? textColor;
+  final Color? decorationClr;
   final TextStyle? textStyle;
-  final double? fontSize, lineHeight;
+  final double? fontSize, lineHeight , decorationThickness;
   final TextOverflow? overflow;
   final int? maxLine;
   final TextAlign textAlign;
   final TextDecoration? textDecoration;
+  final TextDecorationStyle?  decorationStyle;
   final TextScaler? textScaler;
   final Function()? onTap;
 
@@ -22,9 +26,12 @@ class Txt extends StatelessWidget {
         this.hasUnderLine = false,
         this.hasLineThrough = false,
         this.textColor,
+        this.decorationClr,
+        this.decorationStyle,
         this.textStyle,
         this.fontSize,
         this.fontWeight,
+        this.decorationThickness,
         this.overflow,
         this.checkOverFlow = false,
         this.maxLine,
@@ -53,8 +60,8 @@ class Txt extends StatelessWidget {
         overflow: overflow ?? (checkOverFlow ? TextOverflow.ellipsis : TextOverflow.visible),
         style: (textStyle ?? const TextStyle()).copyWith(
           fontWeight: hasBold
-              ? (fontWeight ?? FontWeight.bold)
-              : (fontWeight ?? FontWeight.normal),
+              ? (fontWeight ?? Static.fontWeight ?? FontWeight.bold)
+              : (fontWeight ?? Static.fontWeight ?? FontWeight.normal),
           fontStyle: hasItalic ? FontStyle.italic : FontStyle.normal,
           decoration: textDecoration ??
               (hasUnderLine
@@ -63,9 +70,12 @@ class Txt extends StatelessWidget {
                   ? TextDecoration.lineThrough
                   : TextDecoration.none),
           color: textColor ?? Colors.black,
-          fontSize: fontSize ?? 14,
-          fontFamily: fontFamily,
+          fontSize: fontSize ?? Static.txtDefaultFontSize ?? 14.0,
+          fontFamily: fontFamily ?? Static.txtFontFamily ?? Static.fontFamily,
           height: lineHeight,
+          decorationColor: decorationClr ?? textColor,
+          decorationStyle: decorationStyle ?? (hasUnderLine || hasLineThrough ? TextDecorationStyle.solid : null),
+          decorationThickness: (hasUnderLine || hasLineThrough) ? decorationThickness??1.0 : null,
         ),
       ),
     );
