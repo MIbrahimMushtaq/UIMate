@@ -68,9 +68,11 @@ class _ExampleHomePageState extends State<ExampleHomePage> {
               MyDivider(),
               Btn(text: 'Text Submit',
                 onPressed: (){},
-                textDecorationColor: Colors.amber,
+                isLoading: true,
+                bgColor: Colors.orange,
+                loaderColor: Colors.green,
+                decorationColor: Colors.amber,
                 hasBorder: false,
-                isTextOnly: true,
                 textDecoration: TextDecoration.underline,
                 textColor: Colors.red,),
               // Button Example
@@ -82,7 +84,7 @@ class _ExampleHomePageState extends State<ExampleHomePage> {
                 borderColor: Colors.red,
                 preFix: Icon(Icons.access_alarm_outlined,size: 28,),
                 isLoading: true,
-                loadingColor: Colors.red,
+                //loadingColor: Colors.red,
                 onPressed: () {
                   if (_controller.text.isEmpty) {
                   } else {
