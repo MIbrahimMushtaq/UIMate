@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
-import '../widgets/txt_input.dart';
-
 class Clr {
   static Color colorPrimary = Colors.black;
   static Color colorSecondary = Colors.black;
