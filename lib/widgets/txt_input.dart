@@ -215,8 +215,7 @@ class _TxtFormInputState extends State<TxtFormInput> {
         case TxtInputBorderType.underline:
           return underlineBorder;
         case TxtInputBorderType.outline:
-        default:
-          return outlineBorder;
+        return outlineBorder;
       }
     }
 
