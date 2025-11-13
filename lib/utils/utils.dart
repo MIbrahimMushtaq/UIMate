@@ -47,37 +47,6 @@ class Static {
   static Widget? customLoadingProWidget;
   static Color? toastBackgroundColor;
   static Color? toastTextColor;
-  static Color? btnLoadingColor;
-  static double? btnHeight;
-  static Color?  btnTextColor;
-  static double? btnRadius;
-  static Color? btnBorderColor;
-  static Widget? btnLoadingWidget;
-
-  static Color? txtInputColor;
-
-  static Color? txtInputCursorColor;
-
-  static TxtInputBorderType? txtInputBorderType;
-
-  static bool? txtInputHasLabelOnTop;
-
-  static bool? txtInputHasLabel;
-
-  static TextStyle? labelInputStyle;
-
-  static double? labelPadding;
-
-  static TextStyle? styleInput;
-
-  static Color? borderColor;
-
-  static EdgeInsetsGeometry? txtInoutDefaultContentPadding;
-
-  static double? btnTextSize;
-
-  static String? btnFontFamily;
-
 
   Static._();
 }

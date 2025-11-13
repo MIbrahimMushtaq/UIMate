@@ -20,14 +20,12 @@ Future<void> uiSetSetting({
   double defaultRadius = 8.0,
   double defaultFontSize = 14.0,
   Color? txtColor,
-  Color? txtInputColor,
   TextStyle? txtStyle,
   TextStyle? labelInputStyle,
   TextStyle? hintInputStyle,
   TextStyle? styleInput,
   String? fontFamily,
   String? txtFontFamily,
-  String? txtInputFontFamily,
   FontWeight? fontWeight,
   bool? appDirectionLeftToRight,
   Duration? dialogAnimationDuration,
@@ -40,16 +38,6 @@ Future<void> uiSetSetting({
   Color? toastBackgroundColor,
   Color? toastTextColor,
   ToastGravity toastGravity = ToastGravity.BOTTOM,
-  Color? btnBackgroundColor,
-  Color? btnLoadingColor,
-  double? btnHeight,
-
-  Color?  btnTextColor,
-  double? btnRadius,
-  Color? btnBorderColor,
-  Widget? btnLoadingWidget,
-  double? btnTextSize,
-  String? btnFontFamily,
   bool? defaultLoadingProIsIOS
 
 }) async {
@@ -58,7 +46,6 @@ Future<void> uiSetSetting({
   Clr.colorPrimary = primaryColor;
   Clr.colorSecondary = secondaryColor;
   Clr.colorTxt = txtColor;
-  Clr.colorTxtInput = txtInputColor;
 
   GetImage.defaultImage = defaultImage;
   GetImage.defImageIsAsset = defImageIsAsset;
@@ -66,25 +53,16 @@ Future<void> uiSetSetting({
 
   Siz.defaultRadius = defaultRadius;
   Static.fontWeight = fontWeight;
-  Static.txtInputDecoration = inputDecoration;
   Static.fontFamily = fontFamily;
   Static.txtFontFamily = txtFontFamily;
-  Static.txtInputFontFamily = txtInputFontFamily;
   Static.appDirectionLeftToRight = appDirectionLeftToRight;
   Static.customLoadingProWidget = customLoadingWidget;
   Static.toastLength = defaultToastLength;
   Static.toastBackgroundColor = toastBackgroundColor;
   Static.toastTextColor = toastTextColor;
   Static.toastGravity = toastGravity;
-
   Static.defaultDateFormat = defaultDateFormat;
   Static.defaultDateTimeFormat = defaultDateTimeFormat;
-  Static.btnLoadingColor = btnLoadingColor;
-  Static.btnHeight = btnHeight;
-  Static.btnTextColor = btnTextColor;
-  Static.btnRadius = btnRadius;
-  Static.btnBorderColor = btnBorderColor;
-  Static.btnLoadingWidget = btnLoadingWidget;
   Static.defaultLoadingProIsIOS = defaultLoadingProIsIOS;
 
 }

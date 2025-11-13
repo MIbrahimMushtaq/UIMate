@@ -1,205 +1,19 @@
-// import 'package:flutter/material.dart';
-//
-// import '../utils/utils.dart';
-//
-// class Btn extends StatefulWidget {
-//   final String text;
-//   final VoidCallback? onPressed;
-//
-//   // Loader
-//   final bool isLoading;
-//   final Widget? loadingWidget;
-//   final Color? loadingColor;
-//
-//   // Style
-//   final Color? textColor;
-//   final Color? bgColor;
-//   final Color? borderColor;
-//   final Color? shadowColor;
-//   final Color? onSurface;
-//   final bool hasBorder;
-//   final bool isLoose;
-//   final bool hasBold;
-//   final bool isTextOnly;
-//   final TextDecoration? textDecoration;
-//   final Color? textDecorationColor;
-//   // Dimensions
-//   final double? radius;
-//   final double? textSize;
-//   final double? verticalPadding;
-//   final double? elevation;
-//   final double? borderWidth;
-//   final double? width;
-//   final double? height;
-//
-//   // Prefix / Postfix
-//   final Widget? preFix;
-//   final Widget? postFix;
-//
-//   // Text
-//   final TextStyle? textStyle;
-//   final String? fontFamily;
-//   final FontWeight? fontWeight;
-//
-//   const Btn({
-//     super.key,
-//     required this.text,
-//     this.onPressed,
-//     this.isLoading = false,
-//     this.loadingWidget,
-//     this.loadingColor,
-//     this.textColor,
-//     this.bgColor,
-//     this.borderColor,
-//     this.shadowColor,
-//     this.onSurface,
-//     this.hasBorder = true,
-//     this.isLoose = false,
-//     this.hasBold = false,
-//     this.isTextOnly = false,
-//     this.textDecoration,
-//     this.textDecorationColor,
-//     this.radius,
-//     this.textSize,
-//     this.verticalPadding = 4,
-//     this.elevation,
-//     this.borderWidth = 1,
-//     this.width,
-//     this.height,
-//     this.preFix,
-//     this.postFix,
-//     this.textStyle,
-//     this.fontFamily,
-//     this.fontWeight,
-//   });
-//
-//   @override
-//   State<Btn> createState() => _BtnState();
-// }
-//
-// class _BtnState extends State<Btn> {
-//   late Color? textColor;
-//   late Color? bgColor;
-//   late Color? borderColor;
-//
-//   @override
-//   void initState() {
-//     super.initState();
-//     textColor = widget.textColor ?? Colors.white;
-//     bgColor = widget.bgColor ?? Colors.blue;
-//     borderColor = widget.borderColor ?? Colors.blue;
-//   }
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return SizedBox(
-//       height: widget.height ?? Static.btnHeight ?? 48,
-//       width: widget.width,
-//       child: ElevatedButton(
-//         style: ElevatedButton.styleFrom(
-//           backgroundColor: widget.isTextOnly ? Colors.transparent : bgColor ?? Static.btnBackgroundColor,
-//           foregroundColor: textColor ?? Static.btnTextColor ?? Colors.black,
-//           elevation: widget.isTextOnly ? 0 : widget.elevation,
-//           shadowColor: widget.shadowColor ?? Colors.black12,
-//           shape: RoundedRectangleBorder(
-//             borderRadius: BorderRadius.circular(widget.radius ?? Static.btnRadius ?? 8.0),
-//           ),
-//           side: widget.hasBorder
-//               ? BorderSide(
-//             color: widget.isTextOnly
-//                 ? (borderColor ?? Static.btnBorderColor?? Colors.blue): borderColor?? Static.btnBorderColor ??Colors.black,
-//             width: widget.borderWidth ?? 1,
-//           )
-//               : BorderSide.none,
-//         ),
-//         onPressed: widget.isLoading ? (){} : widget.onPressed,
-//         child: Stack(
-//           alignment: Alignment.center,
-//           children: [
-//             Opacity(
-//               opacity: widget.isLoading ? 0.0 : 1.0,
-//               child: Row(
-//                 mainAxisSize: widget.isLoose ? MainAxisSize.max : MainAxisSize.min,
-//                 mainAxisAlignment: MainAxisAlignment.center,
-//                 children: [
-//                   if (widget.preFix != null) ...[
-//                     widget.preFix!,
-//                     SizedBox(width: widget.verticalPadding),
-//                   ],
-//                   Text(
-//                     widget.text,
-//                     style: widget.textStyle ??
-//                         TextStyle(
-//                           color: textColor,
-//                           fontSize: widget.textSize ?? 16,
-//                           fontWeight: widget.hasBold
-//                               ? FontWeight.bold
-//                               : widget.fontWeight ?? FontWeight.normal,
-//                           fontFamily: widget.fontFamily,
-//                           decoration: widget.textDecoration?? TextDecoration.none,
-//                           decorationColor: widget.textDecorationColor?? textColor,
-//                         ),
-//                   ),
-//                   if (widget.postFix != null) ...[
-//                     SizedBox(width: widget.verticalPadding),
-//                     widget.postFix!,
-//                   ],
-//                 ],
-//               ),
-//             ),
-//             if (widget.isLoading)
-//               widget.loadingWidget ?? Static.btnLoadingWidget ??
-//                   SizedBox(
-//                     width: 20,
-//                     height: 20,
-//                     child: CircularProgressIndicator(
-//                       strokeWidth: 2,
-//                       valueColor: AlwaysStoppedAnimation<Color>(
-//                         widget.loadingColor ?? Static.btnLoadingColor ?? Colors.black,
-//                       ),
-//                     ),
-//                   ),
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-// }
-
 import 'package:flutter/material.dart';
-
-import '../utils/utils.dart';
+import '../global_config/btn_config.dart';
 
 class Btn extends StatelessWidget {
   final String? text;
   final VoidCallback? onPressed;
 
-  // Colors
   final Color? textColor, bgColor, shadowColor, onSurface, borderColor;
-  final Color? loaderColor;
-  final Color? decorationColor;
-
-  // Booleans
+  final Color? loaderColor, decorationColor;
   final bool hasBorder, isLoose, hasBold, isTextOnly, isLoading;
-
-  // Styling
   final double? decorationThickness;
   final FontWeight? fontWeight;
   final String? fontFamily;
   final TextDecoration? textDecoration;
-  final double? radius,
-      textSize,
-      verticalPadding,
-      elevation,
-      borderWidth,
-      width,
-      height;
-
-  // Widgets
-  final Widget? preFix;
-  final Widget? postFix;
-  final Widget? loader;
-
+  final double? radius, textSize, verticalPadding, elevation, borderWidth, width, height;
+  final Widget? preFix, postFix, loader;
   final TextStyle? textStyle;
   final ButtonStyle? style;
   final EdgeInsetsGeometry? padding;
@@ -208,29 +22,40 @@ class Btn extends StatelessWidget {
   final OutlinedBorder? shape;
   final MainAxisAlignment mainAxisAlignment;
 
+  final BtnConfig? config;
+
   const Btn({
     super.key,
     required this.text,
     this.onPressed,
     this.textColor,
     this.bgColor,
+    this.shadowColor,
+    this.onSurface,
     this.borderColor,
-    this.decorationThickness,
+    this.loaderColor,
+    this.decorationColor,
     this.hasBorder = true,
     this.isLoose = false,
     this.hasBold = false,
     this.isTextOnly = false,
+    this.isLoading = false,
+    this.decorationThickness,
+    this.fontWeight,
+    this.fontFamily,
+    this.textDecoration,
     this.radius,
     this.textSize,
+    this.verticalPadding = 4,
+    this.elevation,
+    this.borderWidth = 1,
+    this.width,
+    this.height,
     this.preFix,
     this.postFix,
+    this.loader,
     this.textStyle,
-    this.verticalPadding = 4,
-    this.borderWidth = 1,
     this.style,
-    this.shadowColor,
-    this.onSurface,
-    this.elevation,
     this.padding,
     this.minimumSize,
     this.maximumSize,
@@ -238,29 +63,23 @@ class Btn extends StatelessWidget {
     this.side,
     this.shape,
     this.mainAxisAlignment = MainAxisAlignment.center,
-    this.width,
-    this.height,
-    this.fontWeight,
-    this.fontFamily,
-    this.isLoading = false,
-    this.loader,
-    this.loaderColor,
-    this.textDecoration,
-    this.decorationColor,
+    this.config,
   });
 
   @override
   Widget build(BuildContext context) {
+    final mergedGlobal = BtnConfig.global.merge(config);
+
     return SizedBox(
-      height: height ?? Static.btnHeight ?? 48,
+      height: height ?? mergedGlobal.height ?? 48,
       width: width,
-      child: buildButton(),
+      child: _buildButton(mergedGlobal),
     );
   }
 
-  Widget buildButton() {
+  Widget _buildButton(BtnConfig mergedGlobal) {
     if (isLoading) {
-      return button(
+      return _button(
         loader ??
             SizedBox(
               height: 20,
@@ -273,108 +92,82 @@ class Btn extends StatelessWidget {
       );
     }
 
-    if (preFix != null && postFix == null) {
-      return button(
-        Row(
-          mainAxisSize: isLoose ? MainAxisSize.max : MainAxisSize.min,
-          mainAxisAlignment: mainAxisAlignment,
-          children: [
-            preFix!,
-            SizedBox(width: verticalPadding),
-            Text(text!, style: textStyle ?? textStyleLocal()),
-          ],
-        ),
-      );
-    } else if (preFix != null && postFix != null) {
-      return button(
-        Row(
-          mainAxisSize: isLoose ? MainAxisSize.max : MainAxisSize.min,
-          mainAxisAlignment: mainAxisAlignment,
-          children: [
-            preFix!,
-            SizedBox(width: verticalPadding),
-            Text(text!, style: textStyle ?? textStyleLocal()),
-            SizedBox(width: verticalPadding),
-            postFix!,
-          ],
-        ),
-      );
-    } else if (postFix != null && preFix == null) {
-      return button(
-        Row(
-          mainAxisSize: isLoose ? MainAxisSize.max : MainAxisSize.min,
-          mainAxisAlignment: mainAxisAlignment,
-          children: [
-            Text(text!, style: textStyle ?? textStyleLocal()),
-            SizedBox(width: verticalPadding),
-            postFix!,
-          ],
-        ),
-      );
-    } else {
-      return button(
-        Row(
-          mainAxisSize: isLoose ? MainAxisSize.max : MainAxisSize.min,
-          mainAxisAlignment: mainAxisAlignment,
-          children: [
-            Text(text!, style: textStyle ?? textStyleLocal()),
-          ],
-        ),
-      );
+    List<Widget> children = [];
+    if (preFix != null) children.add(preFix!);
+    if (preFix != null) children.add(SizedBox(width: verticalPadding));
+    children.add(Text(
+      text!,
+      style: textStyle ?? _textStyle(mergedGlobal),
+    ));
+    if (postFix != null) {
+      children.add(SizedBox(width: verticalPadding));
+      children.add(postFix!);
     }
+
+    return _button(
+      Row(
+        mainAxisSize: isLoose ? MainAxisSize.max : MainAxisSize.min,
+        mainAxisAlignment: mainAxisAlignment,
+        children: children,
+      ),
+    );
   }
 
-  Widget button(Widget child) {
+  Widget _button(Widget child) {
     return ElevatedButton(
       style: style ??
           ElevatedButton.styleFrom(
             backgroundColor: isTextOnly
                 ? Colors.transparent
-                : (bgColor ?? Colors.blue),
-            foregroundColor: textColor ?? Colors.white,
-            disabledForegroundColor:
-            textColor ?? Colors.white, // ✅ same color even when disabled
-            disabledBackgroundColor:
-            isTextOnly ? Colors.transparent : (bgColor ?? Colors.blue),
+                : (bgColor ?? BtnConfig.global.bgColor ?? Colors.blue),
+            foregroundColor: textColor ?? BtnConfig.global.textColor ?? Colors.white,
+            disabledForegroundColor: textColor ?? Colors.white,
+            disabledBackgroundColor: isTextOnly
+                ? Colors.transparent
+                : (bgColor ?? BtnConfig.global.bgColor ?? Colors.blue),
             elevation: isTextOnly ? 0 : elevation ?? 2,
             shadowColor: shadowColor ?? Colors.black26,
             shape: shape ??
                 RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(radius ?? 8),
+                  borderRadius: BorderRadius.circular(
+                    radius ?? BtnConfig.global.radius ?? 8,
+                  ),
+                  side: hasBorder
+                      ? BorderSide(
+                    color: borderColor ??
+                        BtnConfig.global.borderColor ??
+                        (bgColor ?? Colors.blue),
+                    width: borderWidth!,
+                  )
+                      : BorderSide.none,
                 ),
-            side: side ??
-                (hasBorder
-                    ? BorderSide(
-                  color: isTextOnly
-                      ? Colors.transparent
-                      : borderColor ?? Colors.blue,
-                  width: borderWidth!,
-                )
-                    : BorderSide.none),
           ),
       onPressed: isLoading ? null : onPressed,
       child: Padding(
-        padding:
-        padding ?? const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        padding: padding ??
+            EdgeInsets.symmetric(
+              horizontal: 16,
+              vertical: verticalPadding ?? 8,
+            ),
         child: child,
       ),
     );
   }
 
-  TextStyle textStyleLocal() {
+  TextStyle _textStyle(BtnConfig mergedGlobal) {
     return TextStyle(
-      color: isTextOnly ? (textColor ?? Static.btnTextColor ?? Colors.black) : textColor??Static.btnTextColor,
-      fontSize: textSize ?? Static.btnTextSize ?? 16,
-      fontWeight: hasBold
-          ? fontWeight ?? FontWeight.bold
-          : fontWeight ?? FontWeight.normal,
-      fontFamily: fontFamily ?? Static.btnFontFamily,
-      decoration: textDecoration, // ✅ supports underline/lineThrough
-      decorationColor:
-      decorationColor ?? textColor ?? Colors.black, // ✅ underline color
+      color: isTextOnly
+          ? (textColor ?? mergedGlobal.textColor ?? Colors.black)
+          : textColor ?? mergedGlobal.textColor ?? Colors.white,
+      fontSize: textSize ?? mergedGlobal.textSize ?? 16,
+      fontWeight: hasBold ? fontWeight ?? FontWeight.bold : fontWeight ?? FontWeight.normal,
+      fontFamily: fontFamily ?? mergedGlobal.fontFamily,
+      decoration: textDecoration,
+      decorationColor: decorationColor ?? textColor ?? Colors.black,
       decorationThickness: decorationThickness ?? 1.5,
     );
   }
 }
+
 
 
