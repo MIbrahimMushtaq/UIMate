@@ -127,7 +127,6 @@ class _ExampleHomePageState extends State<ExampleHomePage> {
                 height: 400,
                 radius: 20,
                 fit: BoxFit.cover,
-                isAssets: false,
                 appBar: AppBar(title: Text('my app bar'),backgroundColor: Colors.black,),
               )
             ],
