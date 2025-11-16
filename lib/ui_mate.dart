@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:ui_mate/utils/date.dart';
 import 'package:ui_mate/utils/utils.dart';
-import 'package:ui_mate/widgets/get_image.dart';
 export 'helpers/box_decoration.dart';
 export 'helpers/toast.dart';
 export 'helpers/focus.dart';
@@ -46,11 +45,6 @@ Future<void> uiSetSetting({
   Clr.colorPrimary = primaryColor;
   Clr.colorSecondary = secondaryColor;
   Clr.colorTxt = txtColor;
-
-  GetImage.defaultImage = defaultImage;
-  GetImage.defImageIsAsset = defImageIsAsset;
-  Static.defaultImageClick = defaultImageClick;
-
   Siz.defaultRadius = defaultRadius;
   Static.fontWeight = fontWeight;
   Static.fontFamily = fontFamily;

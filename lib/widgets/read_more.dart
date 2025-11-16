@@ -2,7 +2,7 @@ import 'dart:ui' as ui show TextHeightBehavior;
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
-enum TrimMode { Length, Line }
+enum TrimMode {length, line }
 
 @immutable
 class Annotation {
@@ -30,7 +30,7 @@ class ReadMoreTxt extends StatefulWidget {
         this.colorClickableText,
         this.trimLength = 240,
         this.trimLines = 2,
-        this.trimMode = TrimMode.Length,
+        this.trimMode = TrimMode.length,
         this.moreStyle,
         this.lessStyle,
         this.delimiter = '$_kEllipsis ',
@@ -68,7 +68,7 @@ class ReadMoreTxt extends StatefulWidget {
         this.colorClickableText,
         this.trimLength = 240,
         this.trimLines = 2,
-        this.trimMode = TrimMode.Length,
+        this.trimMode = TrimMode.length,
         this.moreStyle,
         this.lessStyle,
         this.delimiter = '$_kEllipsis ',
@@ -145,7 +145,6 @@ class ReadMoreTxt extends StatefulWidget {
 }
 
 const String _kEllipsis = '\u2026';
-const String _kLineSeparator = '\u2028';
 
 class ReadMoreTxtState extends State<ReadMoreTxt> {
   final TapGestureRecognizer _recognizer = TapGestureRecognizer();

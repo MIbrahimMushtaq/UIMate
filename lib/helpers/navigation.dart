@@ -23,7 +23,7 @@ Future<dynamic> pSetRout({
   Widget pageWidget = page is Widget ? page : page();
 
   final route = PageRouteBuilder(
-    pageBuilder: (_, _, ___) => pageWidget,
+    pageBuilder: (BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation) => pageWidget,
     settings: RouteSettings(
       name: routeName,
       arguments: arguments,
@@ -31,12 +31,12 @@ Future<dynamic> pSetRout({
     fullscreenDialog: fullscreenDialog,
     opaque: opaque ?? true,
     transitionDuration: duration ?? const Duration(milliseconds: 300),
-    transitionsBuilder: (_, animation, secondaryAnimation, child) {
-      final curved =
-      curve != null ? CurvedAnimation(parent: animation, curve: curve) : animation;
+    transitionsBuilder: (BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation, Widget child) {
+      final curved = curve != null ? CurvedAnimation(parent: animation, curve: curve) : animation;
       return FadeTransition(opacity: curved, child: child);
     },
   );
+
 
   switch (routeType) {
     case RouteType.push:
