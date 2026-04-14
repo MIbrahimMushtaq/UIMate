@@ -13,11 +13,14 @@ class TxtFormInput extends StatefulWidget {
   final bool autofocus;
   final bool readOnly;
   final bool isOptional;
+  final bool showStar;
 
   final int? maxLength, maxLines, minLines, validationLength;
   final Color? borderColor;
   final Color? cursorColor;
   final Color? fillColor;
+  final Color? disabledFillColor;
+  final Color? disabledBorderColor;
   final double? borderWidth;
   final BorderRadius? borderRadius;
   final EdgeInsetsGeometry? contentPadding;
@@ -25,6 +28,8 @@ class TxtFormInput extends StatefulWidget {
   final String? errorMessage, errorLengthMessage;
   final String? Function()? validationConditionAddOn;
   final double? height;
+
+  final String? Function(String?)? validator;
 
   // Text styles
   final String? fontFamily;
@@ -62,6 +67,7 @@ class TxtFormInput extends StatefulWidget {
     this.autofocus = false,
     this.readOnly = false,
     this.isOptional = false,
+    this.showStar = false,
     this.maxLength,
     this.maxLines,
     this.minLines,
@@ -69,6 +75,8 @@ class TxtFormInput extends StatefulWidget {
     this.borderColor,
     this.cursorColor,
     this.fillColor,
+    this.disabledFillColor,
+    this.disabledBorderColor,
     this.borderWidth,
     this.borderRadius,
     this.contentPadding,
@@ -77,6 +85,7 @@ class TxtFormInput extends StatefulWidget {
     this.errorLengthMessage,
     this.validationConditionAddOn,
     this.height,
+    this.validator,
     this.fontFamily,
     this.labelFontFamily,
     this.hintFontFamily,
@@ -122,61 +131,73 @@ class _TxtFormInputState extends State<TxtFormInput> {
             padding: EdgeInsets.only(
               bottom: widget.labelPadding ?? config.labelPadding ?? 6,
             ),
-            child: Text(
-              widget.labelText!,
-              style: TextStyle(
-                fontFamily: widget.labelFontFamily ??
-                    config.labelFontFamily ??
-                    widget.fontFamily ??
-                    config.fontFamily,
-                color: widget.labelTextColor ??
-                    config.labelTextColor ??
-                    Colors.black87,
-                fontSize:
-                widget.labelTextSize ?? config.labelTextSize ?? 15,
-                fontStyle:
-                widget.labelFontStyle ?? config.labelFontStyle,
-                fontWeight: widget.labelFontWeight ??
-                    config.labelFontWeight ??
-                    FontWeight.w500,
-              ),
+            child: Row(
+              children: [
+                Text(
+                  widget.labelText!,
+                  style: TextStyle(
+                    fontFamily: widget.labelFontFamily ??
+                        config.labelFontFamily ??
+                        widget.fontFamily ??
+                        config.fontFamily,
+                    color: widget.labelTextColor ??
+                        config.labelTextColor ??
+                        Colors.black87,
+                    fontSize:
+                    widget.labelTextSize ?? config.labelTextSize ?? 15,
+                    fontStyle:
+                    widget.labelFontStyle ?? config.labelFontStyle,
+                    fontWeight: widget.labelFontWeight ??
+                        config.labelFontWeight ??
+                        FontWeight.w500,
+                  ),
+                ),
+                if (widget.showStar && !widget.isOptional)
+                  const Text(
+                    "*",
+                    style: TextStyle(
+                      color: Colors.red,
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+              ],
             ),
           ),
-        SizedBox(
-          height: widget.height ?? config.height,
-          child: TextFormField(
-            controller: widget.controller,
-            showCursor: widget.showCursor,
-            obscureText: widget.isPassword,
-            enabled: widget.enabled,
-            autofocus: widget.autofocus,
-            readOnly: widget.readOnly,
-            maxLength: widget.maxLength,
-            maxLines: widget.isPassword ? 1 : widget.maxLines,
-            minLines: widget.minLines,
-            inputFormatters: widget.inputFormatters,
-            textAlign: widget.textAlign,
-            style: widget.style ??
-                TextStyle(
-                  fontFamily: widget.fontFamily ?? config.fontFamily,
-                  fontSize: widget.hintTextSize ??
-                      config.hintTextSize ??
-                      15,
-                  color: widget.labelTextColor ??
-                      config.labelTextColor ??
-                      Colors.black,
-                ),
-            onChanged: widget.onChanged,
-            onTap: widget.onTap,
-            keyboardType: widget.keyboardType,
-            textInputAction: widget.textInputAction,
-            onEditingComplete: widget.onEditingComplete,
-            focusNode: widget.focusNode,
-            cursorColor:
-            widget.cursorColor ?? config.cursorColor ?? Colors.black,
-            decoration: _buildInputDecoration(),
-            validator: widget.isOptional ? null : _defaultValidator,
-          ),
+
+        TextFormField(
+          controller: widget.controller,
+          showCursor: widget.showCursor,
+          obscureText: widget.isPassword,
+          enabled: widget.enabled,
+          autofocus: widget.autofocus,
+          readOnly: widget.readOnly,
+          maxLength: widget.maxLength,
+          maxLines: widget.isPassword ? 1 : widget.maxLines ?? config.maxLines,
+          minLines: widget.minLines,
+          inputFormatters: widget.inputFormatters,
+          textAlign: widget.textAlign,
+          style: widget.style ??
+              TextStyle(
+                fontFamily: widget.fontFamily ?? config.fontFamily,
+                fontSize:
+                widget.hintTextSize ?? config.hintTextSize ?? 15,
+                color: widget.labelTextColor ??
+                    config.labelTextColor ??
+                    Colors.black,
+              ),
+          onChanged: widget.onChanged,
+          onTap: widget.onTap,
+          keyboardType: widget.keyboardType,
+          textInputAction: widget.textInputAction,
+          onEditingComplete: widget.onEditingComplete,
+          focusNode: widget.focusNode,
+          cursorColor:
+          widget.cursorColor ?? config.cursorColor ?? Colors.black,
+          decoration: _buildInputDecoration(),
+          validator: widget.isOptional
+              ? null
+              : (widget.validator ?? _defaultValidator),
         ),
       ],
     );
@@ -187,35 +208,44 @@ class _TxtFormInputState extends State<TxtFormInput> {
     final TxtInputBorderType borderType =
         widget.borderType ?? config.borderType ?? TxtInputBorderType.outline;
 
-    OutlineInputBorder outlineBorder = OutlineInputBorder(
-      borderRadius: widget.borderRadius ??
-          config.borderRadius ??
-          BorderRadius.circular(8),
-      borderSide: BorderSide(
-        color: widget.borderColor ??
-            config.borderColor ??
-            Colors.grey.shade400,
-        width: widget.borderWidth ?? config.borderWidth ?? 1.2,
-      ),
-    );
+    Color normalBorderColor = widget.borderColor ??
+        config.borderColor ??
+        Colors.grey.shade400;
 
-    UnderlineInputBorder underlineBorder = UnderlineInputBorder(
-      borderSide: BorderSide(
-        color: widget.borderColor ??
-            config.borderColor ??
-            Colors.grey.shade400,
-        width: widget.borderWidth ?? config.borderWidth ?? 1.2,
-      ),
-    );
+    Color disabledBorderColor = widget.disabledBorderColor ??
+        config.borderColor ??
+        Colors.grey.shade300;
 
-    InputBorder getBorder() {
+    OutlineInputBorder outlineBorder(Color color) {
+      return OutlineInputBorder(
+        borderRadius: widget.borderRadius ??
+            config.borderRadius ??
+            BorderRadius.circular(8),
+        borderSide: BorderSide(
+          color: color,
+          width: widget.borderWidth ?? config.borderWidth ?? 1.2,
+        ),
+      );
+    }
+
+    UnderlineInputBorder underlineBorder(Color color) {
+      return UnderlineInputBorder(
+        borderSide: BorderSide(
+          color: color,
+          width: widget.borderWidth ?? config.borderWidth ?? 1.2,
+        ),
+      );
+    }
+
+    InputBorder getBorder(Color color) {
       switch (borderType) {
         case TxtInputBorderType.none:
           return InputBorder.none;
         case TxtInputBorderType.underline:
-          return underlineBorder;
+          return underlineBorder(color);
         case TxtInputBorderType.outline:
-        return outlineBorder;
+        default:
+          return outlineBorder(color);
       }
     }
 
@@ -226,22 +256,32 @@ class _TxtFormInputState extends State<TxtFormInput> {
             config.hintFontFamily ??
             widget.fontFamily ??
             config.fontFamily,
-        color:
-        widget.hintTextColor ?? config.hintTextColor ?? Colors.grey,
-        fontSize:
-        widget.hintTextSize ?? config.hintTextSize ?? 14,
+        color: widget.hintTextColor ?? config.hintTextColor ?? Colors.grey,
+        fontSize: widget.hintTextSize ?? config.hintTextSize ?? 14,
         fontStyle: widget.hintFontStyle ?? config.hintFontStyle,
         fontWeight: widget.hintFontWeight ??
             config.hintFontWeight ??
             FontWeight.normal,
       ),
+
       prefixIcon: widget.preFix,
       suffixIcon: widget.postFix,
       filled: true,
-      fillColor: widget.fillColor ?? config.fillColor ?? Colors.grey.shade100,
-      border: getBorder(),
-      enabledBorder: getBorder(),
-      focusedBorder: getBorder(),
+
+      // ✅ Fill color fix
+      fillColor: widget.enabled
+          ? (widget.fillColor ?? config.fillColor ?? Colors.grey.shade100)
+          : (widget.disabledFillColor ??
+          widget.fillColor ??
+          config.fillColor ??
+          Colors.grey.shade200),
+
+      // ✅ Border fix
+      border: getBorder(normalBorderColor),
+      enabledBorder: getBorder(normalBorderColor),
+      focusedBorder: getBorder(normalBorderColor),
+      disabledBorder: getBorder(disabledBorderColor),
+
       contentPadding: widget.contentPadding ??
           const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
       counterText: '',
@@ -250,19 +290,25 @@ class _TxtFormInputState extends State<TxtFormInput> {
 
   String? _defaultValidator(String? value) {
     setState(() => hasError = true);
+
     if (value == null || value.isEmpty) {
-      return widget.errorMessage ?? 'Please enter ${widget.labelText ?? ''}';
+      return widget.errorMessage ??
+          'Please Enter ${widget.labelText ?? ''}';
     }
+
     if (widget.validationLength != null &&
         value.length < widget.validationLength!) {
       return widget.errorLengthMessage ??
           'At least ${widget.validationLength} characters required';
     }
+
     setState(() => hasError = false);
+
     if (widget.validationConditionAddOn != null) {
       final res = widget.validationConditionAddOn!();
       if (res != null) return res;
     }
+
     return null;
   }
 }

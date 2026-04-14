@@ -29,15 +29,12 @@ class Siz {
 
 
 class Static {
-  static bool defaultImageClick = true;
   static FontWeight? fontWeight;
   static double? txtDefaultFontSize;
   static Toast? toastLength;
   static ToastGravity? toastGravity;
   static String? fontFamily;
   static String? txtFontFamily;
-  static String? txtInputFontFamily;
-  static InputDecoration? txtInputDecoration;
   static bool? appDirectionLeftToRight;
   static bool? defaultLoadingProIsIOS;
   static String? defaultDateFormat;

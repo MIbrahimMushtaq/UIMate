@@ -15,7 +15,7 @@ class TxtFormInputConfig {
   final FontStyle? hintFontStyle;
   final FontWeight? labelFontWeight;
   final FontWeight? hintFontWeight;
-
+  final int? maxLines;
   final double? borderWidth;
   final BorderRadius? borderRadius;
   final Color? borderColor;
@@ -38,6 +38,7 @@ class TxtFormInputConfig {
     this.labelFontWeight,
     this.hintFontWeight,
     this.borderWidth,
+    this.maxLines,
     this.borderRadius,
     this.borderColor,
     this.fillColor,

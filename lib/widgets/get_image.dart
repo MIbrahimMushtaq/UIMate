@@ -3,10 +3,6 @@ import 'dart:typed_data';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
-import 'package:ui_mate/widgets/txt.dart';
-import '../helpers/box_decoration.dart';
-import '../helpers/navigation.dart';
-import '../utils/utils.dart';
 import 'full_photo.dart';
 
 enum LoadingType { progress, linear, shimmer }
@@ -35,8 +31,12 @@ class GetImage extends StatelessWidget {
   /// LOCAL error image overrides GLOBAL
   final String? errorImagePath;
 
+  /// Error image type
+  final ImageType? errorImageType;
+
   /// 🔥 GLOBAL ERROR IMAGE (Optional)
   static String? globalErrorImage;
+  static ImageType globalErrorImageType = ImageType.asset;
 
   /// Optional manual override for type, otherwise auto detect
   final ImageType imageType;
@@ -48,8 +48,8 @@ class GetImage extends StatelessWidget {
   const GetImage({
     super.key,
     this.imagePath,
-    this.width = Siz.profileImageSize,
-    this.height = Siz.profileImageSize,
+    this.width = 80,
+    this.height = 80,
     this.fit = BoxFit.cover,
     this.radius,
     this.imageColor,
@@ -65,41 +65,21 @@ class GetImage extends StatelessWidget {
     this.errorWidget,
     this.loadingType = LoadingType.progress,
     this.errorImagePath,
+    this.errorImageType,
     this.imageType = ImageType.auto,
     this.shimmerBaseColor = const Color(0xFFE0E0E0),
     this.shimmerHighlightColor = const Color(0xFFF5F5F5),
   });
 
-  // ---- HELPERS ----
+  // -------------------
+  // HELPERS
+  // -------------------
   bool _isNetwork(String path) =>
       path.startsWith("http://") || path.startsWith("https://");
 
   bool _isAsset(String path) =>
-      !path.startsWith("http") &&
-          !path.startsWith("/") &&
-          !path.contains("://");
+      !path.startsWith("http") && !path.startsWith("/") && !path.contains("://");
 
-  // ---- ERROR IMAGE HANDLER ----
-  Widget _buildError() {
-    String? errorSource = errorImagePath ?? globalErrorImage;
-
-    if (errorSource == null) {
-      return Image.asset("assets/default.png", fit: fit);
-    }
-
-    // detect based on string
-    if (_isNetwork(errorSource)) {
-      return CachedNetworkImage(imageUrl: errorSource, fit: fit);
-    } else if (_isAsset(errorSource)) {
-      return Image.asset(errorSource, fit: fit);
-    } else if (File(errorSource).existsSync()) {
-      return Image.file(File(errorSource), fit: fit);
-    }
-
-    return Image.asset("assets/default.png", fit: fit);
-  }
-
-  // ---- AUTO TYPE DETECTION ----
   ImageType _detectType(dynamic img) {
     if (imageType != ImageType.auto) return imageType;
 
@@ -114,6 +94,64 @@ class GetImage extends StatelessWidget {
     }
 
     return ImageType.asset; // fallback
+  }
+
+  // -------------------
+  // ERROR IMAGE HANDLER
+  // -------------------
+  Widget _buildError() {
+    final String? errPath = errorImagePath ?? globalErrorImage;
+    final ImageType errType = errorImageType ?? globalErrorImageType;
+
+    if (errPath == null || errPath.trim().isEmpty) {
+      return Image.asset(
+        "assets/default.png",
+        width: width,
+        height: height,
+        fit: fit,
+      );
+    }
+
+    switch (errType) {
+      case ImageType.asset:
+        return Image.asset(
+          errPath,
+          width: width,
+          height: height,
+          fit: fit,
+          color: imageColor,
+        );
+      case ImageType.network:
+        return CachedNetworkImage(
+          imageUrl: errPath,
+          width: width,
+          height: height,
+          fit: fit,
+        );
+      case ImageType.file:
+        return Image.file(
+          File(errPath),
+          width: width,
+          height: height,
+          fit: fit,
+          color: imageColor,
+        );
+      case ImageType.memory:
+        return Image.memory(
+          Uint8List(0),
+          width: width,
+          height: height,
+          fit: fit,
+          color: imageColor,
+        );
+      default:
+        return Image.asset(
+          "assets/default.png",
+          width: width,
+          height: height,
+          fit: fit,
+        );
+    }
   }
 
   @override
@@ -134,25 +172,27 @@ class GetImage extends StatelessWidget {
 
     return GestureDetector(
       onTap: onTap ??
-          (Static.defaultImageClick
+          (true
               ? () {
-            pSetRout(
-              page: () => FullPhotoView(
-                images: [imagePath],
-                isAsset: type == ImageType.asset,
-                isSingleImage: true,
-                backgroundDecoration: backgroundDecoration,
-                onPageChanged: onPageChanged,
-                pageController: pageController,
-                appBar: appBar,
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (_) => FullPhotoView(
+                  images: [imagePath],
+                  isAsset: type == ImageType.asset,
+                  isSingleImage: true,
+                  backgroundDecoration: backgroundDecoration,
+                  onPageChanged: onPageChanged,
+                  pageController: pageController,
+                  appBar: appBar,
+                ),
               ),
-              context: context,
             );
           }
               : null),
       child: ClipRRect(
         borderRadius:
-        borderRadius ?? BorderRadius.circular(radius ?? Siz.defaultRadius),
+        borderRadius ?? BorderRadius.circular(radius ?? 8),
         child: _buildByType(type, img),
       ),
     );
@@ -165,99 +205,67 @@ class GetImage extends StatelessWidget {
           img,
           width: width,
           height: height,
-          color: imageColor,
           fit: fit,
-          errorBuilder: (BuildContext context, Object error, StackTrace? stackTrace) => _buildError(),
+          color: imageColor,
+          errorBuilder: (_, __, ___) => _buildError(),
         );
-
       case ImageType.file:
         return Image.file(
           img,
           width: width,
           height: height,
           fit: fit,
-          errorBuilder: (BuildContext context, Object error, StackTrace? stackTrace) => _buildError(),
+          errorBuilder: (_, __, ___) => _buildError(),
         );
-
       case ImageType.asset:
         return Image.asset(
           img,
           width: width,
           height: height,
-          color: imageColor,
           fit: fit,
-          errorBuilder: (BuildContext context, Object error, StackTrace? stackTrace) => _buildError(),
+          color: imageColor,
+          errorBuilder: (_, __, ___) => _buildError(),
         );
-
       case ImageType.network:
-        return buildFutureBuilderImage(img);
-
+        return _buildNetwork(img);
       default:
         return _buildError();
     }
   }
 
-  // ---- NETWORK HANDLER ----
-  Widget buildFutureBuilderImage(String url) {
+  Widget _buildNetwork(String url) {
     return FutureBuilder(
       future: Future.delayed(imageLoadingDelay),
-      builder: (context, snapshot) {
+      builder: (_, snapshot) {
         return CachedNetworkImage(
           imageUrl: url,
+          width: width,
+          height: height,
           fit: fit,
           imageBuilder: (context, provider) {
             return Container(
-              height: height,
               width: width,
+              height: height,
               decoration: BoxDecoration(
                 image: DecorationImage(image: provider, fit: fit),
               ),
             );
           },
           progressIndicatorBuilder: (context, url, downloadProgress) {
-            final progress = downloadProgress.progress ?? 0.0;
-
+            double progress = downloadProgress.progress ?? 0.0;
             switch (loadingType) {
               case LoadingType.progress:
                 return Center(
-                  child: Stack(
-                    alignment: Alignment.center,
-                    children: [
-                      SizedBox(
-                        height: height,
-                        width: width,
-                        child: CircularProgressIndicator(
-                          value: progress,
-                          strokeWidth: 4,
-                          color: loadingColor,
-                        ),
-                      ),
-                      Txt(
-                        '${(progress * 100).toStringAsFixed(0)}%',
-                        fontSize: 12,
-                        textColor: Clr.colorPrimary,
-                      ),
-                    ],
+                  child: CircularProgressIndicator(
+                    value: progress,
+                    color: loadingColor,
                   ),
                 );
-
               case LoadingType.linear:
-                return Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    LinearProgressIndicator(
-                      value: progress,
-                      color: loadingColor,
-                    ),
-                    const SizedBox(height: 6),
-                    Txt(
-                      '${(progress * 100).toStringAsFixed(0)}%',
-                      fontSize: 12,
-                      textColor: Clr.colorPrimary,
-                    ),
-                  ],
+                return LinearProgressIndicator(
+                  value: progress,
+                  color: loadingColor,
                 );
-
               case LoadingType.shimmer:
                 return Shimmer.fromColors(
                   baseColor: shimmerBaseColor,
@@ -270,17 +278,7 @@ class GetImage extends StatelessWidget {
                 );
             }
           },
-          errorWidget: (context, url, error) =>
-          errorWidget ??
-              Container(
-                height: height,
-                width: width,
-                decoration: pBoxDecoration(
-                  borderRadius: borderRadius ??
-                      BorderRadius.circular(radius ?? Siz.defaultRadius),
-                ),
-                child: _buildError(),
-              ),
+          errorWidget: (_, __, ___) => errorWidget ?? _buildError(),
         );
       },
     );

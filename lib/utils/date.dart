@@ -4,9 +4,9 @@ import 'package:intl/intl.dart';
 import 'package:ui_mate/utils/utils.dart';
 
 class Dates {
-  Dates._(); // Private constructor for utility class
+  Dates._();
 
-  // Common date/time patterns
+  // ================= Formats =================
   static const String pGetTime12 = 'hh:mm:ss a';
   static const String pGetTime24 = 'HH:mm:ss';
   static const String pGetTime24WithoutSec = 'HH:mm';
@@ -21,80 +21,118 @@ class Dates {
   static const String pGetDateFullMonth = 'dd-MMMM-yyyy';
   static const String pGetMonthAndDate = 'MMM dd';
   static const String pGetMonthDayAndTime = 'MMM dd, hh:mm a';
-  static const String pGetMonthDayAndTimeForDifference = 'dd-MM-yyyy, hh:mm a';
+  static const String pGetMonthDayAndTimeForDifference =
+      'dd-MM-yyyy, hh:mm a';
 
-  /// Initializes date formatting for a given [localization] (default: 'en').
-  static Future<void> initializeDateFormat({String? localization}) async {
-    final locale = localization ?? 'en';
-    await initializeDateFormatting(locale, null);
+  // ================= Locale Init =================
+  static bool _initialized = false;
+  static String _currentLocale = 'en_US';
+
+  static void _ensureInitialized([String? locale]) {
+    final loc = locale ?? _currentLocale;
+
+    if (_initialized && _currentLocale == loc) return;
+
+    try {
+      initializeDateFormatting(loc, null);
+      _initialized = true;
+      _currentLocale = loc;
+    } catch (e) {
+      if (kDebugMode) {
+        print('Dates locale init failed: $e');
+      }
+    }
   }
 
-  /// Returns a [DateFormat] for date-only patterns.
-  static DateFormat pDateFormatter({String? localization}) {
-    final format = Static.defaultDateFormat ?? pGetDate;
-    final locale = localization ?? 'en';
-    return DateFormat(format, locale);
+  // ================= Formatters =================
+  static DateFormat _dateFormatter({String? localization}) {
+    final locale = localization ?? _currentLocale;
+    _ensureInitialized(locale);
+
+    return DateFormat(
+      Static.defaultDateFormat ?? pGetDate,
+      locale,
+    );
   }
 
-  /// Returns a [DateFormat] for date and time patterns.
-  static DateFormat pDateTimeFormatter({String? localization}) {
-    final format = Static.defaultDateTimeFormat ?? pGetDateTime;
-    final locale = localization ?? 'en';
-    return DateFormat(format, locale);
+  static DateFormat _dateTimeFormatter({String? localization}) {
+    final locale = localization ?? _currentLocale;
+    _ensureInitialized(locale);
+
+    return DateFormat(
+      Static.defaultDateTimeFormat ?? pGetDateTime,
+      locale,
+    );
   }
 
-  /// Converts a [DateTime] object to a formatted date string.
-  static String pDateToString(DateTime? dateTime,
-      {String? defaultValue, String? localization}) {
+  // ================= Public APIs =================
+  static String pDateToString(
+      DateTime? dateTime, {
+        String? defaultValue,
+        String? localization,
+      }) {
     if (dateTime == null) return defaultValue ?? '';
     try {
-      return pDateFormatter(localization: localization).format(dateTime);
+      return _dateFormatter(localization: localization).format(dateTime);
     } catch (e) {
-      if (kDebugMode) print('pDateToString error: $e');
+      if (kDebugMode) {
+        print('pDateToString error: $e');
+      }
       return defaultValue ?? '00-00-0000';
     }
   }
 
-  /// Converts a [DateTime] object to a formatted date-time string.
-  static String pDateTimeToString(DateTime? dateTime,
-      {String? defaultValue, String? localization}) {
+  static String pDateTimeToString(
+      DateTime? dateTime, {
+        String? defaultValue,
+        String? localization,
+      }) {
     if (dateTime == null) return defaultValue ?? '';
     try {
-      return pDateTimeFormatter(localization: localization).format(dateTime);
+      return _dateTimeFormatter(localization: localization).format(dateTime);
     } catch (e) {
-      if (kDebugMode) print('pDateTimeToString error: $e');
+      if (kDebugMode) {
+        print('pDateTimeToString error: $e');
+      }
       return defaultValue ?? '00-00-0000';
     }
   }
 
-  /// Formats [dateTime] with a custom [format].
-  static String pGetDateTimeCustomFormat(DateTime? dateTime, String format,
-      {String? defaultValue, String? localization}) {
+  static String pGetDateTimeCustomFormat(
+      DateTime? dateTime,
+      String format, {
+        String? defaultValue,
+        String? localization,
+      }) {
     if (dateTime == null) return defaultValue ?? '';
     try {
-      final locale = localization ?? 'en';
+      final locale = localization ?? _currentLocale;
+      _ensureInitialized(locale);
+
       return DateFormat(format, locale).format(dateTime);
     } catch (e) {
-      if (kDebugMode) print('pGetDateTimeCustomFormat error: $e');
+      if (kDebugMode) {
+        print('pGetDateTimeCustomFormat error: $e');
+      }
       return defaultValue ?? '00-00-0000';
     }
   }
 
-  /// Parses a [String] into a [DateTime] safely.
-  /// Returns a fallback date if parsing fails.
   static DateTime pStringToDate(String date) {
     try {
       return DateTime.parse(date);
     } catch (e) {
-      if (kDebugMode) print('pStringToDate error: $e');
-      // Return a clearly invalid past date as fallback
+      if (kDebugMode) {
+        print('pStringToDate error: $e');
+      }
       return DateTime(1970, 1, 1);
     }
   }
 
   static DateTime? tryParseFlexible(String? dateStr) {
     if (dateStr == null || dateStr.isEmpty) return null;
-    final possibleFormats = [
+
+    final formats = [
       pGetDateFormat,
       pGetShortDate,
       pGetLongDate,
@@ -103,9 +141,9 @@ class Dates {
       'yyyy-MM-dd HH:mm:ss',
     ];
 
-    for (final format in possibleFormats) {
+    for (final f in formats) {
       try {
-        return DateFormat(format).parse(dateStr);
+        return DateFormat(f).parse(dateStr);
       } catch (_) {}
     }
     return null;

@@ -1,7 +1,6 @@
 library;
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:ui_mate/utils/date.dart';
 import 'package:ui_mate/utils/utils.dart';
 export 'helpers/box_decoration.dart';
 export 'helpers/toast.dart';
@@ -40,7 +39,6 @@ Future<void> uiSetSetting({
   bool? defaultLoadingProIsIOS
 
 }) async {
-  await Dates.initializeDateFormat();
 
   Clr.colorPrimary = primaryColor;
   Clr.colorSecondary = secondaryColor;
