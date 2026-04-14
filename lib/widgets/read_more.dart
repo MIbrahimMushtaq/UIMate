@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 
 enum TrimMode {length, line }
 
-@immutable
 class Annotation {
   const Annotation({
     required this.regExp,
